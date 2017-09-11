@@ -3,33 +3,14 @@
   // mapbox access token for aparr account
   L.mapbox.accessToken = 'pk.eyJ1IjoiYW5kcmVhcnBhcnIiLCJhIjoiY2o2NGJrODB0MG0weTJxbnp1M2h2cWppdyJ9.O4620rmp32gJntwavWnlaQ';
 
-  // create the Leaflet map using mapbox.light tiles
+  // create the Leaflet map using mapbox.dark tiles
   var map = L.mapbox.map('map', 'mapbox.dark', {
     zoomSnap: .1,
-    center: [39.82, -98.58],
+    center: [39.82, -98.58], // center on the US
     zoom: 4,
     minZoom: 3,
     maxZoom: 12,
   });
-
-  //load geojson files
-  // var waterLayer = omnivore.geojson('data/water.geojson')
-  //   .on('ready', function() {
-  //     map.fitBounds(waterLayer.getBounds());
-  //       waterLayer.eachLayer(function(layer){
-  //         layer.bindPopup(layer.feature.properties.Utility);
-  //       });
-  //   })
-  //   .addTo(map);
-  //
-  // var stateLayer = omnivore.geojson('data/statesummary.geojson')
-  //   .on('ready', function() {
-  //     map.fitBounds(stateLayer.getBounds());
-  //       stateLayer.eachLayer(function(layer){
-  //         layer.bindPopup(layer.feature.properties.popserved);
-  //       });
-  //   })
-  //   .addTo(map)
 
   $.getJSON('data/statesum.json', function(data) {
 
@@ -63,7 +44,6 @@
         "Percent served by public utilities: " + (layer.feature.properties.publicper * 100).toFixed(2) + "%" + "<br>" +
         "Average annual water bill: $" + layer.feature.properties.avgbill)
     });
-
     drawLegend(breaks);
 
   }
@@ -110,23 +90,55 @@
       div.innerHTML = "<h3><b>Pop Served by Private Water Systems</b></h3>";
 
       // for each of our breaks
-                for (var i = 0; i < breaks.length; i++) {
-                    // determine the color associated with each break value,
-                    // including the lower range value
-                    var color = getColor(breaks[i][0], breaks);
-                    // concatenate a <span> tag styled with the color and the range values
-                    // of that class and include a label with the low and a high ends of that class range
-                    div.innerHTML +=
-                        '<span style="background:' + color + '"></span> ' +
-                        '<label>' + (breaks[i][0].toLocaleString()*100).toFixed(2) + '%' + ' &mdash; ' +
-                        (breaks[i][1].toLocaleString()*100).toFixed(2) + '%' +'</label>';
-                }
+      for (var i = 0; i < breaks.length; i++) {
+        // determine the color associated with each break value,
+        // including the lower range value
+        var color = getColor(breaks[i][0], breaks);
+        // concatenate a <span> tag styled with the color and the range values
+        // of that class and include a label with the low and a high ends of that class range
+        div.innerHTML +=
+          '<span style="background:' + color + '"></span> ' +
+          '<label>' + (breaks[i][0].toLocaleString() * 100).toFixed(2) + '%' + ' &mdash; ' +
+          (breaks[i][1].toLocaleString() * 100).toFixed(2) + '%' + '</label>';
+      }
 
       return div;
     };
 
     legend.addTo(map);
+  };
+
+    $.getJSON('data/water.json', function(data){
+    var waterLayer = L.geoJson(data, {
+      pointToLayer: function(feature, coordinates) {
+        return L.circleMarker(coordinates, {
+          color: '#1f78b4',
+          fillColor: '#1f78b4',
+          weight: 1,
+          stroke: 1,
+          fillOpacity: .8,
+          radius: getRadius(feature.properties.Population),
+        });
+      },
+    }).addTo(map);
+    makePopup(waterLayer)
+  });
+
+  function getRadius(val) {
+    var radius = Math.sqrt(val / Math.PI);
+    return radius * .015;
   }
 
+  function makePopup(waterLayer) {
+    waterLayer.eachLayer(function(layer) {
+    layer.bindPopup("<b>" + layer.feature.properties.Utility + "</b><br>" +
+      "Population Served: " + layer.feature.properties.Population + "<br>" +
+      "Owner Type: " + layer.feature.properties.Owner + "<br>" +
+      "Wholesaler: " + layer.feature.properties.Wholesaler + "<br>" +
+      "Water Source: " + layer.feature.properties.Gwsw + "<br>" +
+      "Average annual water bill: $" + layer.feature.properties.Bill + "<br>" +
+      "Rank: " + layer.feature.properties.Rank)
+  });
+};
 
 })();
