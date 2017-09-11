@@ -12,6 +12,7 @@
     maxZoom: 12,
   });
 
+  // Load statesum json
   $.getJSON('data/statesum.json', function(data) {
 
     var stateLayer = L.geoJson(data, {
@@ -23,10 +24,34 @@
         };
       }
 
-    }).addTo(map);
-
+    });
+    drawInfo(stateLayer);
     drawMap(stateLayer);
   });
+
+  function drawInfo(stateLayer) {
+    var info = L.control({position: 'bottomright'});
+    info.onAdd = function(map) {
+      var div = L.DomUtil.create('div', 'info');
+      return div;
+    }
+    info.addTo(map);
+    //$(".info").hide();
+  }; // end drawInfo
+
+  // this function is not working yet
+  function updateInfo(layer) {
+
+    var html = "<b>" + layer.feature.properties.name + "</b><br>" +
+      "Total Population Served: " + layer.feature.properties.popserved + "<br>" +
+      "Total Water Systems: " + layer.feature.properties.totalwatersystems + "<br>" +
+      "Total Water Facilities: " + layer.feature.properties.totalwaterfacilities + "<br>" +
+      "Percent served by private utilities: " + (layer.feature.properties.privateper * 100).toFixed(2) + "%" + "<br>" +
+      "Percent served by public utilities: " + (layer.feature.properties.publicper * 100).toFixed(2) + "%" + "<br>" +
+      "Average annual water bill: $" + layer.feature.properties.avgbill
+
+    $(".info").html(html);
+  }; // end updateInfo
 
   function drawMap(stateLayer) {
 
@@ -36,17 +61,13 @@
       layer.setStyle({
         fillColor: getColor(layer.feature.properties.privateper, breaks)
       });
-      layer.bindPopup("<b>" + layer.feature.properties.name + "</b><br>" +
-        "Total Population Served: " + layer.feature.properties.popserved + "<br>" +
-        "Total Water Systems: " + layer.feature.properties.totalwatersystems + "<br>" +
-        "Total Water Facilities: " + layer.feature.properties.totalwaterfacilities + "<br>" +
-        "Percent served by private utilities: " + (layer.feature.properties.privateper * 100).toFixed(2) + "%" + "<br>" +
-        "Percent served by public utilities: " + (layer.feature.properties.publicper * 100).toFixed(2) + "%" + "<br>" +
-        "Average annual water bill: $" + layer.feature.properties.avgbill)
-    });
+      layer.on('mouseover', function() {
+        updateInfo(this);
+      });
+    }).addTo(map);
     drawLegend(breaks);
 
-  }
+  }; // end drawMap
 
   function getClassBreaks(stateLayer) {
 
@@ -138,7 +159,7 @@
       "Water Source: " + layer.feature.properties.Gwsw + "<br>" +
       "Average annual water bill: $" + layer.feature.properties.Bill + "<br>" +
       "Rank: " + layer.feature.properties.Rank)
-  });
+  })
 };
 
 })();
