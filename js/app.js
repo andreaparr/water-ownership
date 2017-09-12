@@ -12,10 +12,18 @@
     maxZoom: 12,
   });
 
-  // Load statesum json
-  $.getJSON('data/statesum.json', function(data) {
 
-    var stateLayer = L.geoJson(data, {
+
+  // load all the data here first
+  $.when(
+    $.getJSON('data/statesum.json'),
+    $.getJSON('data/water.json')
+  ).done(function(statesData, waterData) {
+
+    // access data like so:
+    console.log(statesData[0], waterData[0]);
+
+    var stateLayer = L.geoJson(statesData[0], {
       style: function(feature) {
         return {
           color: '#dddddd',
@@ -27,6 +35,21 @@
     });
     drawInfo(stateLayer);
     drawMap(stateLayer);
+
+    var waterLayer = L.geoJson(waterData[0], {
+      pointToLayer: function(feature, coordinates) {
+        return L.circleMarker(coordinates, {
+          color: '#1f78b4',
+          fillColor: '#1f78b4',
+          weight: 1,
+          stroke: 1,
+          fillOpacity: .8,
+          radius: getRadius(feature.properties.Population),
+        });
+      },
+    }).addTo(map);
+    makePopup(waterLayer)
+
   });
 
   function drawInfo(stateLayer) {
@@ -128,22 +151,6 @@
 
     legend.addTo(map);
   };
-
-    $.getJSON('data/water.json', function(data){
-    var waterLayer = L.geoJson(data, {
-      pointToLayer: function(feature, coordinates) {
-        return L.circleMarker(coordinates, {
-          color: '#1f78b4',
-          fillColor: '#1f78b4',
-          weight: 1,
-          stroke: 1,
-          fillOpacity: .8,
-          radius: getRadius(feature.properties.Population),
-        });
-      },
-    }).addTo(map);
-    makePopup(waterLayer)
-  });
 
   function getRadius(val) {
     var radius = Math.sqrt(val / Math.PI);
