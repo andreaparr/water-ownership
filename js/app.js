@@ -124,7 +124,7 @@
   function drawLegend(breaks) {
 
     var legend = L.control({
-      position: 'topleft'
+      position: 'topright'
     });
 
     legend.onAdd = function() {
