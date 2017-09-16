@@ -41,15 +41,18 @@
         var colors = {
             Private: '#ff6600',
             Public: '#1f78b4',
-            Nonprofit: '#1f78b4'
+            Nonprofit: '#1f78b4' // for the purpose of this map, I'm not going to distinguish between public utilities and the three nonprofit utilities.
           };
         return L.circleMarker(coordinates, {
           color: colors[feature.properties.Owner],
           fillColor: colors[feature.properties.Owner],
           weight: 1,
           stroke: 1,
-          fillOpacity: .6,
+          fillOpacity: .2,
           radius: getRadius(feature.properties.Population),
+          ZIndexOffset: (function(a, b) {
+            return b.properties.Population - a.properties.Population;
+          }),
         });
       },
     }).addTo(map);
@@ -151,6 +154,9 @@
           (breaks[i][1].toLocaleString() * 100).toFixed(0) + '%' + '</label>';
       }
 
+      div.innerHTML += "<h3><b>500 Largest Water Systems</b></h3>";
+      div.innerHTML +="<body1>&#8226 Public Utility</body1><br><body2>&#8226 Private Utility</body2>"
+
       return div;
     };
 
@@ -159,19 +165,19 @@
 
   function getRadius(val) {
     var radius = Math.sqrt(val / Math.PI);
-    return radius * .015;
+    return radius * .018;
   }
 
-  function makePopup(waterLayer) {
-    waterLayer.eachLayer(function(layer) {
-    layer.bindPopup("<b>" + layer.feature.properties.Utility + "</b><br>" +
-      "Population Served: " + layer.feature.properties.Population + "<br>" +
-      "Owner Type: " + layer.feature.properties.OwnerType + "<br>" +
-      "Wholesaler: " + layer.feature.properties.Wholesaler + "<br>" +
-      "Water Source: " + layer.feature.properties.Gwsw + "<br>" +
-      "Average annual water bill: $" + layer.feature.properties.Bill + "<br>" +
-      "Rank: " + layer.feature.properties.Rank)
-  })
+function makePopup(waterLayer) {
+  waterLayer.eachLayer(function(layer) {
+  layer.bindPopup("<b>" + layer.feature.properties.Utility + "</b><br>" +
+    "Population Served: " + layer.feature.properties.Population + "<br>" +
+    "Owner Type: " + layer.feature.properties.OwnerType + "<br>" +
+    "Wholesaler: " + layer.feature.properties.Wholesaler + "<br>" +
+    "Water Source: " + layer.feature.properties.Gwsw + "<br>" +
+    "Average annual water bill: $" + layer.feature.properties.Bill + "<br>" +
+    "Top 500 Rank by expense: " + layer.feature.properties.Rank)
+})
 };
 
 })();

@@ -37,6 +37,18 @@ hr.small, hr.large {
     display: block;
     clear: both;
 }
+
+.legend body1 {
+  font-size: 1.1em;
+  font-weight: normal;
+  color: #1f78b4;
+}
+
+.legend body2 {
+  font-size: 1.1em;
+  font-weight: normal;
+  color: #ff6600;
+}
 .info {
     padding: 6px 8px;
     font-size: 1em;
