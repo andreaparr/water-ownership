@@ -170,7 +170,7 @@
 
 function makePopup(waterLayer) {
   waterLayer.eachLayer(function(layer) {
-  layer.bindPopup("<b>" + layer.feature.properties.Utility + "</b><br>" +
+  layer.bindPopup("<b>Utility: " + layer.feature.properties.Utility + "</b><br>" +
     "Population Served: " + layer.feature.properties.Population + "<br>" +
     "Owner Type: " + layer.feature.properties.OwnerType + "<br>" +
     "Wholesaler: " + layer.feature.properties.Wholesaler + "<br>" +
