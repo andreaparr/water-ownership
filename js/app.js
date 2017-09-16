@@ -142,8 +142,8 @@
         // of that class and include a label with the low and a high ends of that class range
         div.innerHTML +=
           '<span style="background:' + color + '"></span> ' +
-          '<label>' + (breaks[i][0].toLocaleString() * 100).toFixed(2) + '%' + ' &mdash; ' +
-          (breaks[i][1].toLocaleString() * 100).toFixed(2) + '%' + '</label>';
+          '<label>' + (breaks[i][0].toLocaleString() * 100).toFixed(0) + '%' + ' &mdash; ' +
+          (breaks[i][1].toLocaleString() * 100).toFixed(0) + '%' + '</label>';
       }
 
       return div;
