@@ -38,12 +38,17 @@
 
     var waterLayer = L.geoJson(waterData[0], {
       pointToLayer: function(feature, coordinates) {
+        var colors = {
+            Private: '#ff6600',
+            Public: '#1f78b4',
+            Nonprofit: '#1f78b4'
+          };
         return L.circleMarker(coordinates, {
-          color: '#1f78b4',
-          fillColor: '#1f78b4',
+          color: colors[feature.properties.Owner],
+          fillColor: colors[feature.properties.Owner],
           weight: 1,
           stroke: 1,
-          fillOpacity: .8,
+          fillOpacity: .6,
           radius: getRadius(feature.properties.Population),
         });
       },
@@ -113,12 +118,12 @@
 
   function getColor(d, breaks) {
 
-    return d <= breaks[0][1] ? '#edf8fb' :
-      d <= breaks[1][1] ? '#bfd3e6' :
-      d <= breaks[2][1] ? '#9ebcda' :
-      d <= breaks[3][1] ? '#8c96c6' :
-      d <= breaks[4][1] ? '#8856a7' :
-      '#810f7c';
+    return d <= breaks[0][1] ? '#f2f0f7' :
+      d <= breaks[1][1] ? '#dadaeb' :
+      d <= breaks[2][1] ? '#bcbddc' :
+      d <= breaks[3][1] ? '#939ac8' :
+      d <= breaks[4][1] ? '#756bb1' :
+      '#54278f';
   }
 
   function drawLegend(breaks) {
@@ -131,7 +136,7 @@
 
       var div = L.DomUtil.create('div', 'legend');
 
-      div.innerHTML = "<h3><b>Pop Served by Private Water Systems</b></h3>";
+      div.innerHTML = "<h3><b>Population Served by<br>Private Water Systems</b></h3>";
 
       // for each of our breaks
       for (var i = 0; i < breaks.length; i++) {
@@ -161,7 +166,7 @@
     waterLayer.eachLayer(function(layer) {
     layer.bindPopup("<b>" + layer.feature.properties.Utility + "</b><br>" +
       "Population Served: " + layer.feature.properties.Population + "<br>" +
-      "Owner Type: " + layer.feature.properties.Owner + "<br>" +
+      "Owner Type: " + layer.feature.properties.OwnerType + "<br>" +
       "Wholesaler: " + layer.feature.properties.Wholesaler + "<br>" +
       "Water Source: " + layer.feature.properties.Gwsw + "<br>" +
       "Average annual water bill: $" + layer.feature.properties.Bill + "<br>" +
