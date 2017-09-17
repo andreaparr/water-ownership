@@ -64,7 +64,6 @@
       return div;
     }
     info.addTo(map);
-    //$(".info").hide();
   }; // end drawInfo
 
   // this function is not working yet
@@ -74,8 +73,8 @@
       "Total Population Served: " + layer.feature.properties.popserved + "<br>" +
       "Total Water Systems: " + layer.feature.properties.totalwatersystems + "<br>" +
       "Total Water Facilities: " + layer.feature.properties.totalwaterfacilities + "<br>" +
-      "Percent served by private utilities: " + (layer.feature.properties.privateper * 100).toFixed(2) + "%" + "<br>" +
-      "Percent served by public utilities: " + (layer.feature.properties.publicper * 100).toFixed(2) + "%" + "<br>" +
+      "Served by private utilities: " + (layer.feature.properties.privateper * 100).toFixed(2) + "%" + "<br>" +
+      "Served by public utilities: " + (layer.feature.properties.publicper * 100).toFixed(2) + "%" + "<br>" +
       "Average annual water bill: $" + layer.feature.properties.avgbill
 
     $(".info").html(html);
@@ -177,6 +176,14 @@
 
   function makePopup(waterLayer) {
     waterLayer.eachLayer(function(layer) {
+      var tooltip = ("<b>Utility: " + layer.feature.properties.Utility + "</b><br>" +
+        "Population Served: " + layer.feature.properties.Population + "<br>" +
+        "Owner Type: " + layer.feature.properties.OwnerType + "<br>" +
+        "Wholesaler: " + layer.feature.properties.Wholesaler + "<br>" +
+        "Water Source: " + layer.feature.properties.Gwsw + "<br>" +
+        "Average annual water bill: $" + layer.feature.properties.Bill + "<br>" +
+        "Top 500 Rank by expense: " + layer.feature.properties.Rank)
+      layer.bindTooltip(tooltip);
       layer.on('mouseover', function() {
         layer.setStyle({
           weight: 2,
@@ -188,14 +195,6 @@
             fillOpacity: .2
           })
         });
-        var tooltip = ("<b>Utility: " + layer.feature.properties.Utility + "</b><br>" +
-          "Population Served: " + layer.feature.properties.Population + "<br>" +
-          "Owner Type: " + layer.feature.properties.OwnerType + "<br>" +
-          "Wholesaler: " + layer.feature.properties.Wholesaler + "<br>" +
-          "Water Source: " + layer.feature.properties.Gwsw + "<br>" +
-          "Average annual water bill: $" + layer.feature.properties.Bill + "<br>" +
-          "Top 500 Rank by expense: " + layer.feature.properties.Rank)
-        layer.bindTooltip(tooltip);
       });
     })
   };
