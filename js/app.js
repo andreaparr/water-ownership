@@ -90,8 +90,18 @@
         fillColor: getColor(layer.feature.properties.privateper, breaks)
       });
       layer.on('mouseover', function() {
+        layer.setStyle({
+          weight: 3,
+          fillOpacity: 1
+        });
         updateInfo(this);
       });
+      layer.on('mouseout', function() {
+        layer.setStyle({
+          weight: 1,
+          fillOpacity: .8
+        })
+      })
     }).addTo(map);
     drawLegend(breaks);
 
@@ -169,8 +179,15 @@
     waterLayer.eachLayer(function(layer) {
       layer.on('mouseover', function() {
         layer.setStyle({
-          weight: 2
+          weight: 2,
+          fillOpacity: .5
         })
+        layer.on('mouseout', function() {
+          layer.setStyle({
+            weight: 1,
+            fillOpacity: .2
+          })
+        });
         var tooltip = ("<b>Utility: " + layer.feature.properties.Utility + "</b><br>" +
           "Population Served: " + layer.feature.properties.Population + "<br>" +
           "Owner Type: " + layer.feature.properties.OwnerType + "<br>" +
@@ -178,13 +195,6 @@
           "Water Source: " + layer.feature.properties.Gwsw + "<br>" +
           "Average annual water bill: $" + layer.feature.properties.Bill + "<br>" +
           "Top 500 Rank by expense: " + layer.feature.properties.Rank)
-        layer.bindTooltip(tooltip);
-        layer.on('mouseout', function() {
-          layer.setStyle({
-            weight: 1
-          })
-        });
-        // this allows users to click on the tooltip (for mobile as hover does not work there)
         layer.bindTooltip(tooltip);
       });
     })
