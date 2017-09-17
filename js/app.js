@@ -167,13 +167,25 @@
 
 function makePopup(waterLayer) {
   waterLayer.eachLayer(function(layer) {
-  layer.bindPopup("<b>Utility: " + layer.feature.properties.Utility + "</b><br>" +
-    "Population Served: " + layer.feature.properties.Population + "<br>" +
-    "Owner Type: " + layer.feature.properties.OwnerType + "<br>" +
-    "Wholesaler: " + layer.feature.properties.Wholesaler + "<br>" +
-    "Water Source: " + layer.feature.properties.Gwsw + "<br>" +
-    "Average annual water bill: $" + layer.feature.properties.Bill + "<br>" +
-    "Top 500 Rank by expense: " + layer.feature.properties.Rank)
+    layer.on('mouseover', function(){
+      layer.setStyle({
+        weight:2
+      })
+      var tooltip = ("<b>Utility: " + layer.feature.properties.Utility + "</b><br>" +
+          "Population Served: " + layer.feature.properties.Population + "<br>" +
+          "Owner Type: " + layer.feature.properties.OwnerType + "<br>" +
+          "Wholesaler: " + layer.feature.properties.Wholesaler + "<br>" +
+          "Water Source: " + layer.feature.properties.Gwsw + "<br>" +
+          "Average annual water bill: $" + layer.feature.properties.Bill + "<br>" +
+          "Top 500 Rank by expense: " + layer.feature.properties.Rank)
+      layer.bindTooltip(tooltip);
+  layer.on('mouseout', function() {
+    layer.setStyle({
+      weight:1
+    })
+  });
+  layer.bindTooltip(tooltip);
+  });
 })
 };
 
