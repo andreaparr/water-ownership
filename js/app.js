@@ -12,8 +12,6 @@
     maxZoom: 12,
   });
 
-
-
   // load all the data here first
   $.when(
     $.getJSON('data/statesum.json'),
@@ -39,10 +37,10 @@
     var waterLayer = L.geoJson(waterData[0], {
       pointToLayer: function(feature, coordinates) {
         var colors = {
-            Private: '#ff4329',
-            Public: '#1f78b4 ',
-            Nonprofit: '#1f78b4' // for the purpose of this map, I'm not going to distinguish between public utilities and the three nonprofit utilities.
-          };
+          Private: '#ff4329',
+          Public: '#1f78b4 ',
+          Nonprofit: '#1f78b4' // for the purpose of this map, I'm not going to distinguish between public utilities and the three nonprofit utilities.
+        };
         return L.circleMarker(coordinates, {
           color: colors[feature.properties.Owner],
           fillColor: colors[feature.properties.Owner],
@@ -58,7 +56,9 @@
   });
 
   function drawInfo(stateLayer) {
-    var info = L.control({position: 'bottomright'});
+    var info = L.control({
+      position: 'bottomright'
+    });
     info.onAdd = function(map) {
       var div = L.DomUtil.create('div', 'info');
       return div;
@@ -152,7 +152,7 @@
       }
 
       div.innerHTML += "<h3><b>500 Largest Water Systems</b></h3>";
-      div.innerHTML +="<body1>&#8226 Public Utility</body1><br><body2>&#8226 Private Utility</body2>"
+      div.innerHTML += "<body1>&#8226 Public Utility</body1><br><body2>&#8226 Private Utility</body2>"
 
       return div;
     };
@@ -165,28 +165,29 @@
     return radius * .018;
   }
 
-function makePopup(waterLayer) {
-  waterLayer.eachLayer(function(layer) {
-    layer.on('mouseover', function(){
-      layer.setStyle({
-        weight:2
-      })
-      var tooltip = ("<b>Utility: " + layer.feature.properties.Utility + "</b><br>" +
+  function makePopup(waterLayer) {
+    waterLayer.eachLayer(function(layer) {
+      layer.on('mouseover', function() {
+        layer.setStyle({
+          weight: 2
+        })
+        var tooltip = ("<b>Utility: " + layer.feature.properties.Utility + "</b><br>" +
           "Population Served: " + layer.feature.properties.Population + "<br>" +
           "Owner Type: " + layer.feature.properties.OwnerType + "<br>" +
           "Wholesaler: " + layer.feature.properties.Wholesaler + "<br>" +
           "Water Source: " + layer.feature.properties.Gwsw + "<br>" +
           "Average annual water bill: $" + layer.feature.properties.Bill + "<br>" +
           "Top 500 Rank by expense: " + layer.feature.properties.Rank)
-      layer.bindTooltip(tooltip);
-  layer.on('mouseout', function() {
-    layer.setStyle({
-      weight:1
+        layer.bindTooltip(tooltip);
+        layer.on('mouseout', function() {
+          layer.setStyle({
+            weight: 1
+          })
+        });
+        // this allows users to click on the tooltip (for mobile as hover does not work there)
+        layer.bindTooltip(tooltip);
+      });
     })
-  });
-  layer.bindTooltip(tooltip);
-  });
-})
-};
+  };
 
 })();
