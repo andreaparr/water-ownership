@@ -1,6 +1,6 @@
 /* custom CSS rules */
 body {
-  font-family: "Work Sans", sans-serif;
+  font-family: "Abel", sans-serif;
   }
 hr.small, hr.large {
     width: 83px;
@@ -47,7 +47,7 @@ hr.small, hr.large {
 .legend body2 {
   font-size: 1.1em;
   font-weight: normal;
-  color: #ff6600;
+  color: #ff4329;
 }
 .info {
     padding: 6px 8px;

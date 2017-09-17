@@ -28,7 +28,7 @@
         return {
           color: '#dddddd',
           weight: 1,
-          fillOpacity: .75,
+          fillOpacity: .8,
         };
       }
 
@@ -39,8 +39,8 @@
     var waterLayer = L.geoJson(waterData[0], {
       pointToLayer: function(feature, coordinates) {
         var colors = {
-            Private: '#ff6600',
-            Public: '#1f78b4',
+            Private: '#ff4329',
+            Public: '#1f78b4 ',
             Nonprofit: '#1f78b4' // for the purpose of this map, I'm not going to distinguish between public utilities and the three nonprofit utilities.
           };
         return L.circleMarker(coordinates, {
@@ -50,9 +50,6 @@
           stroke: 1,
           fillOpacity: .2,
           radius: getRadius(feature.properties.Population),
-          ZIndexOffset: (function(a, b) {
-            return b.properties.Population - a.properties.Population;
-          }),
         });
       },
     }).addTo(map);
@@ -121,12 +118,12 @@
 
   function getColor(d, breaks) {
 
-    return d <= breaks[0][1] ? '#f2f0f7' :
-      d <= breaks[1][1] ? '#dadaeb' :
-      d <= breaks[2][1] ? '#bcbddc' :
-      d <= breaks[3][1] ? '#939ac8' :
-      d <= breaks[4][1] ? '#756bb1' :
-      '#54278f';
+    return d <= breaks[0][1] ? '#2166ac' :
+      d <= breaks[1][1] ? '#67a9cf' :
+      d <= breaks[2][1] ? '#d1e5f0' :
+      d <= breaks[3][1] ? '#fddbc7' :
+      d <= breaks[4][1] ? '#ef8a62' :
+      '#b2182b';
   }
 
   function drawLegend(breaks) {
