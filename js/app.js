@@ -70,7 +70,7 @@
   function updateInfo(layer) {
 
     var html = "<b>" + layer.feature.properties.name + "</b><br>" +
-      "Total Population Served: " + layer.feature.properties.popserved.toLocaleString() + "<br>" +
+      "Total Population Served: " + Number(layer.feature.properties.popserved).toLocaleString() + "<br>" +
       "Total Water Systems: " + layer.feature.properties.totalwatersystems.toLocaleString() + "<br>" +
       "Total Water Facilities: " + layer.feature.properties.totalwaterfacilities.toLocaleString() + "<br>" +
       "Served by private utilities: " + (layer.feature.properties.privateper * 100).toFixed(2) + "%" + "<br>" +
@@ -181,7 +181,7 @@
   function makePopup(waterLayer) {
     waterLayer.eachLayer(function(layer) {
       var tooltip = ("<b>Utility: " + layer.feature.properties.Utility + "</b><br>" +
-        "Population Served: " + layer.feature.properties.Population.toLocaleString() + "<br>" +
+        "Population Served: " + Number(layer.feature.properties.Population).toLocaleString() + "<br>" +
         "Owner Type: " + layer.feature.properties.OwnerType + "<br>" +
         "Wholesaler: " + layer.feature.properties.Wholesaler + "<br>" +
         "Water Source: " + layer.feature.properties.Gwsw + "<br>" +
