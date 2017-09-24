@@ -71,8 +71,8 @@
 
     var html = "<b>" + layer.feature.properties.name + "</b><br>" +
       "Total Population Served: " + Number(layer.feature.properties.popserved).toLocaleString() + "<br>" +
-      "Total Water Systems: " + layer.feature.properties.totalwatersystems.toLocaleString() + "<br>" +
-      "Total Water Facilities: " + layer.feature.properties.totalwaterfacilities.toLocaleString() + "<br>" +
+      "Total Water Systems: " + Number(layer.feature.properties.totalwatersystems).toLocaleString() + "<br>" +
+      "Total Water Facilities: " + Number(layer.feature.properties.totalwaterfacilities).toLocaleString() + "<br>" +
       "Served by private utilities: " + (layer.feature.properties.privateper * 100).toFixed(2) + "%" + "<br>" +
       "Served by public utilities: " + (layer.feature.properties.publicper * 100).toFixed(2) + "%" + "<br>" +
       "Average annual water bill: $" + layer.feature.properties.avgbill
