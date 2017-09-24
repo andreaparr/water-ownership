@@ -88,7 +88,7 @@
       layer.setStyle({
         fillColor: getColor(layer.feature.properties.privateper, breaks)
       });
-      layer.on('mouseover', function() {
+      layer.on('mouseover click', function() {
         layer.setStyle({
           weight: 3,
           fillOpacity: 1
