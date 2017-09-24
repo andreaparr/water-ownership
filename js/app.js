@@ -37,7 +37,7 @@
     var waterLayer = L.geoJson(waterData[0], {
       pointToLayer: function(feature, coordinates) {
         var colors = {
-          Private: '#ff4329',
+          Private: '#31a354',
           Public: '#1f78b4 ',
           Nonprofit: '#1f78b4' // for the purpose of this map, I'm not going to distinguish between public utilities and the three nonprofit utilities.
         };
@@ -46,7 +46,7 @@
           fillColor: colors[feature.properties.Owner],
           weight: 1,
           stroke: 1,
-          fillOpacity: .2,
+          fillOpacity: .3,
           radius: getRadius(feature.properties.Population),
         });
       },
@@ -70,9 +70,9 @@
   function updateInfo(layer) {
 
     var html = "<b>" + layer.feature.properties.name + "</b><br>" +
-      "Total Population Served: " + layer.feature.properties.popserved + "<br>" +
-      "Total Water Systems: " + layer.feature.properties.totalwatersystems + "<br>" +
-      "Total Water Facilities: " + layer.feature.properties.totalwaterfacilities + "<br>" +
+      "Total Population Served: " + layer.feature.properties.popserved.toLocaleString() + "<br>" +
+      "Total Water Systems: " + layer.feature.properties.totalwatersystems.toLocaleString() + "<br>" +
+      "Total Water Facilities: " + layer.feature.properties.totalwaterfacilities.toLocaleString() + "<br>" +
       "Served by private utilities: " + (layer.feature.properties.privateper * 100).toFixed(2) + "%" + "<br>" +
       "Served by public utilities: " + (layer.feature.properties.publicper * 100).toFixed(2) + "%" + "<br>" +
       "Average annual water bill: $" + layer.feature.properties.avgbill
@@ -94,12 +94,14 @@
           fillOpacity: 1
         });
         updateInfo(this);
+        $(".info").show();
       });
       layer.on('mouseout', function() {
         layer.setStyle({
           weight: 1,
           fillOpacity: .8
-        })
+        });
+        $(".info").hide();
       })
     }).addTo(map);
     drawLegend(breaks);
@@ -127,12 +129,12 @@
 
   function getColor(d, breaks) {
 
-    return d <= breaks[0][1] ? '#2166ac' :
-      d <= breaks[1][1] ? '#67a9cf' :
-      d <= breaks[2][1] ? '#d1e5f0' :
-      d <= breaks[3][1] ? '#fddbc7' :
-      d <= breaks[4][1] ? '#ef8a62' :
-      '#b2182b';
+    return d <= breaks[0][1] ? '#feedde' :
+      d <= breaks[1][1] ? '#fdd0a2' :
+      d <= breaks[2][1] ? '#fdae6b' :
+      d <= breaks[3][1] ? '#fd8d3c' :
+      d <= breaks[4][1] ? '#e6550d' :
+      '#a63603';
   }
 
   function drawLegend(breaks) {
@@ -161,7 +163,9 @@
       }
 
       div.innerHTML += "<h3><b>500 Largest Water Systems</b></h3>";
-      div.innerHTML += "<body1>&#8226 Public Utility</body1><br><body2>&#8226 Private Utility</body2>"
+      div.innerHTML += "<p><span class='circle1'></span>Public Utility</p>";
+      div.innerHTML += "<p><span class='circle2'></span>Private Utility</p>";
+      div.innerHTML += "<i>Scaled by # of Service Connections</i>"
 
       return div;
     };
@@ -177,14 +181,14 @@
   function makePopup(waterLayer) {
     waterLayer.eachLayer(function(layer) {
       var tooltip = ("<b>Utility: " + layer.feature.properties.Utility + "</b><br>" +
-        "Population Served: " + layer.feature.properties.Population + "<br>" +
+        "Population Served: " + layer.feature.properties.Population.toLocaleString() + "<br>" +
         "Owner Type: " + layer.feature.properties.OwnerType + "<br>" +
         "Wholesaler: " + layer.feature.properties.Wholesaler + "<br>" +
         "Water Source: " + layer.feature.properties.Gwsw + "<br>" +
         "Average annual water bill: $" + layer.feature.properties.Bill + "<br>" +
         "Top 500 Rank by expense: " + layer.feature.properties.Rank)
       layer.bindTooltip(tooltip);
-      layer.on('mouseover', function() {
+      layer.on('mouseover click', function() {
         layer.setStyle({
           weight: 2,
           fillOpacity: .5

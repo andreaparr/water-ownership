@@ -38,16 +38,9 @@ hr.small, hr.large {
     clear: both;
 }
 
-.legend body1 {
+.legend p {
   font-size: 1.1em;
   font-weight: normal;
-  color: #1f78b4;
-}
-
-.legend body2 {
-  font-size: 1.1em;
-  font-weight: normal;
-  color: #ff4329;
 }
 .info {
   padding: 6px 8px;
@@ -56,4 +49,20 @@ hr.small, hr.large {
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   border-radius: 5px;
   text-align: right;
+}
+span.circle1 {
+  width: 10px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #1f78b4;
+  padding-right: 20px;
+  margin-right: 10px;
+}
+span.circle2 {
+  width: 10px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #31a354;
+  padding-right: 20px;
+  margin-right: 10px;
 }
