@@ -165,7 +165,7 @@
       div.innerHTML += "<h3><b>500 Largest Water Systems</b></h3>";
       div.innerHTML += "<p><span class='circle1'></span>Public Utility</p>";
       div.innerHTML += "<p><span class='circle2'></span>Private Utility</p>";
-      div.innerHTML += "<i>Scaled by # of Service Connections</i>"
+      div.innerHTML += "<i>Scaled by Population Served</i>"
 
       return div;
     };
@@ -175,7 +175,7 @@
 
   function getRadius(val) {
     var radius = Math.sqrt(val / Math.PI);
-    return radius * .018;
+    return radius * .025;
   }
 
   function makePopup(waterLayer) {
